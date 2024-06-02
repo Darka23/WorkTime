@@ -1,0 +1,119 @@
+﻿@using WorkTime.Data.Models
+@model WorkTask?
+
+@{
+    const string message = "Все още няма работници";
+    const string separator = ", ";
+    ViewData["Title"] = $"Детайли за {@Model.Name}"; 
+}
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-body mt-5">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1" style="margin-left:18%;">
+                    <div class="row">
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Статус</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@Model.Status</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Нужни часове за изпълнение</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@Model.TotalHours</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Използвани часове до момента</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@Model.CurrentUsedHours</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-left:25%">
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Дата на започване</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@Model.StartDate</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Дата на завършване</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@Model.EndDate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2 mt-4" style="margin-left:32%;">
+                        <h3 class="" style="color:#a890c0; font-size:2rem;"><i class="fas fa-paint-brush"></i> @Model.Name</h3>
+                        <p class="text-muted">@Model.Description</p>
+                        <br>
+                        <div class="text-muted">
+                            <p class="text-sm">
+                                Отговорник:
+                                <b class="d-block">@Model.Creator?.UserName</b>
+                            </p>
+                            <p class="text-sm">
+                                Работници:
+                                <b class="d-block">
+                                    @if (Model.Workers?.Count == 0)
+                                    {
+                                        @message
+                                    }
+                                    else
+                                    {
+                                        @*@foreach (var worker in Model.Workers)
+                                        {
+                                            @worker.UserName
+                                            @separator
+                                        }*@
+                                        @for (int i = 0; i <= Model.Workers.Count-1; i++)
+                                        {
+                                            @Model.Workers[i].UserName
+                                            if(i != Model.Workers.Count-1)
+                                            {
+                                                @separator
+                                            }
+                                        }
+
+                                    }
+                                </b>
+                            </p>
+                        </div>
+
+                        
+                            <div class="text-center mt-5 mb-3">
+                                <form asp-action="WorkOnTask" asp-route-id="@Model.Id" method="post">
+                                    <input type="number" name="workHours" placeholder="Работни часове" />
+                                    <input type="submit" class="btn btn-sm btn-primary mb-1 ml-2" style="background-color:#a890c0; border:none; height:35px;" value="Работи по задачата" />
+                                </form>
+                            </div>
+
+                            <div class="text-center mt-5 mb-3">
+                                <a asp-action="RejectTask" asp-route-id="@Model.Id" class="btn btn-sm btn-danger">Откажи задачата</a>
+                            </div>                     
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>

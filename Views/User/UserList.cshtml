@@ -1,0 +1,101 @@
+﻿@using System.Security.Claims
+@using WorkTime.Data.Identity
+@using WorkTime.Data.Models
+
+@model Dictionary<ApplicationUser,List<WorkTask>>;
+
+@{
+    ViewData["Title"] = "Списък с потребители";
+}
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-body p-0 mt-4">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">
+                            Снимка
+                        </th>
+                        <th style="width: 20%">
+                            Име на потребител
+                        </th>
+                        <th style="width: 25%">
+                            Задачи,  на които е отговорник
+                        </th>
+                        <th>
+                            E-mail
+                        </th>
+                        <th style="width: 30%" class="text-center">
+                            Позиция
+                        </th>
+                        <th style="width: 30%">
+                            Телефонен номер
+                        </th>
+                        @*<th style="width:20%">
+
+                        </th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="">
+                                <img src="@user.Key.ImageUrl" style="height:60px; width:60px;" />
+                            </td>
+                            <td>
+                                <a>
+                                    @user.Key.UserName
+                                </a>
+                                <br />
+                                <small>
+                                    @user.Key.FirstName @user.Key.LastName
+                                </small>
+                            </td>
+                            <td>
+                                <ul class="list-inline">
+
+                                    @foreach (var task in Model.Values)
+                                    {
+                                        int a = 1;
+                                        foreach (var item in task.Where(x => x.CreatorId == user.Key.Id).ToList())
+                                        {
+                                            <li>
+                                                <span>@a - @item.Name</span>
+                                            </li>
+                                            a++;
+                                        }
+                                    }
+
+                                </ul>
+                            </td>
+                            <td class="project_progress">
+                                <p>@user.Key.Email</p>
+                            </td>
+                            <td class="project-state">
+                                <p>@user.Key.Position</p>
+                            </td>
+                            <td>
+                                <p>@user.Key.PhoneNumber</p>
+                            </td>
+                            @*<td>
+                                @if (user.Key.Id == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                                {
+                                    <a class="btn btn-primary btn-sm" asp-controller="User" asp-action="EditUser" asp-route-id="@user.Key.Id" style="background-color:#a890c0; border:none;">
+                                        Редактирай профил
+                                    </a>
+                                }
+                            </td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>

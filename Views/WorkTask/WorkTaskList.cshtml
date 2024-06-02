@@ -1,0 +1,104 @@
+﻿@using WorkTime.Data.Models
+@model List<WorkTask>
+
+@{
+    ViewData["Title"] = "Лист със задачи";
+}
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-body p-0 mt-4">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 20%">
+                            Име на задачата
+                        </th>
+                        <th style="width: 30%">
+                            Работници
+                        </th>
+                        <th>
+                            Изработени часове
+                        </th>
+                        <th style="width: 8%" class="text-center">
+                            Статус
+                        </th>
+                        <th style="width: 20%">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var task in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a>
+                                    @task.Name
+                                </a>
+                                <br />
+                                <small>
+                                    Започната на: @task.StartDate
+                                </small>
+                                <br />
+                                <small>
+                                    Завършена на: @task.EndDate
+                                </small>
+                            </td>
+                            <td>
+                                <ul class="list-inline">
+                                    @if (task.Workers == null || task.Workers.Count == 0)
+                                    {
+                                        <li>
+                                            <p>Няма текущи работници</p>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var user in task.Workers)
+                                        {
+                                            <li class="list-inline-item">
+                                                <img alt="Avatar" class="table-avatar" src="@user.ImageUrl">
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </td>
+                            <td class="project_progress">
+                                <p>@task.CurrentUsedHours</p>
+                            </td>
+                            <td class="project-state">
+                                @if (task.Status == "Нова")
+                                {
+                                    <span class="badge badge-light">@task.Status</span>
+                                }
+                                @if (task.Status == "Започната")
+                                {
+                                    <span class="badge badge-warning">@task.Status</span>
+                                }
+                                @if (task.Status == "Завършена")
+                                {
+                                    <span class="badge badge-success">@task.Status</span>
+                                }
+                                @if (task.Status == "Отказана")
+                                {
+                                    <span class="badge badge-danger">@task.Status</span>
+                                }
+                            </td>
+                            <td class="project-actions text-right">
+                                <a class="btn btn-primary btn-sm" asp-controller="WorkTask" asp-action="WorkTaskDetails" asp-route-id="@task.Id">
+                                    <i class="fa" style="margin-right:5px; font-size:15px;">&#xf129</i>
+                                    Детайли
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>

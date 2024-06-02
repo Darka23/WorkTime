@@ -1,0 +1,25 @@
+﻿@model WorkTime.Data.Models.WorkCard
+
+@{
+    ViewData["Title"] = "Добави работна карта";
+}
+
+<h1 class="center-row" style="margin-top:90px;">Добави работна карта</h1>
+
+<div class="center-row" style="margin-top:50px;">
+    <div class="col-md-4">
+        <form asp-action="AddWorkCard">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label">Описание на картата</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Добави" class="btn btn-primary" style="background-color: #a890c0; border: none;"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+
